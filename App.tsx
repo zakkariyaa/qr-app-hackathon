@@ -8,6 +8,7 @@ import VolunteerRegisterScreen from './screens/VolunteerRegisterScreen';
 import VolunteerSkillsScreen from './screens/VolunteerSkillsScreen';
 import OrganizerRegisterScreen from './screens/OrganizerRegisterScreen';
 import AvailableVolunteersScreen from './screens/AvailableVolunteersScreen';
+import VolunteerMotivationScreen from './screens/VolunteerMotivationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="VolunteerRegister" component={VolunteerRegisterScreen} />
         <Stack.Screen name="VolunteerSkills" component={VolunteerSkillsScreen} />
+        <Stack.Screen name="VolunteerMotivation" component={VolunteerMotivationScreen} />
         <Stack.Screen name="OrganizerRegister" component={OrganizerRegisterScreen} />
         <Stack.Screen name="AvailableVolunteers" component={AvailableVolunteersScreen} />
       </Stack.Navigator>
