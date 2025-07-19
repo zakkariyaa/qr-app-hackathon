@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text, Dropdown } from 'react-native-paper';
+import { TextInput, Button, Text } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APPROVED_ORGS } from '../data/approvedOrgs';
