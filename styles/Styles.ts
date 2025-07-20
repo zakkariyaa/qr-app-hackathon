@@ -30,7 +30,8 @@ export const Styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    minHeight: 200,
+    minHeight: "60%",
+    maxHeight: "80%",
   },
   sheetOverlay: {
     flex: 1,

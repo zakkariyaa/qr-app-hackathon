@@ -122,106 +122,110 @@ export default function AvailableVolunteersScreen({
         >
           <View style={Styles.sheetOverlay}>
             <View style={Styles.sheetContainer}>
-              <Text variant="titleMedium" style={{ marginBottom: 8 }}>
-                Filter by Location
-              </Text>
-              <TextInput
-                placeholder="Enter location"
-                value={filterLocation}
-                onChangeText={setFilterLocation}
-                mode="outlined"
-                style={{ marginBottom: 12 }}
-              />
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text variant="titleMedium" style={{ marginBottom: 8 }}>
+                  Filter by Location
+                </Text>
+                <TextInput
+                  placeholder="Enter location"
+                  value={filterLocation}
+                  onChangeText={setFilterLocation}
+                  mode="outlined"
+                  contentStyle={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                  style={Styles.input}
+                />
 
-              <Text variant="titleMedium" style={{ marginBottom: 4 }}>
-                Requirements & Smart Matching
-              </Text>
-              <Text
-                variant="bodyMedium"
-                style={{ marginBottom: 8, color: "#666" }}
-              >
-                {" "}
-                {SMART_MATCHING_TEXT}
-              </Text>
-              <TextInput
-                placeholder="Enter specific requirements..."
-                value={requirements}
-                onChangeText={setRequirements}
-                mode="outlined"
-                multiline
-                numberOfLines={3}
-                style={{ marginBottom: 12 }}
-              />
+                <Text variant="titleMedium" style={{ marginBottom: 8 }}>
+                  Requirements & Smart Matching
+                </Text>
+                <Text
+                  variant="bodyMedium"
+                  style={{ marginBottom: 8, color: "#666" }}
+                >
+                  {SMART_MATCHING_TEXT}
+                </Text>
+                <TextInput
+                  placeholder="Enter specific requirements..."
+                  value={requirements}
+                  onChangeText={setRequirements}
+                  mode="outlined"
+                  multiline
+                  numberOfLines={4}
+                  textAlignVertical="center"
+                  contentStyle={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                  style={{ marginBottom: 16, minHeight: 120 }}
+                />
 
-              {requirements.trim() && (
-                <>
-                  <Text variant="bodySmall" style={{ marginBottom: 4 }}>
-                    Minimum similarity score: {minSimilarityScore}%
-                  </Text>
-                  <ProgressBar
-                    progress={minSimilarityScore / 100}
-                    style={{ marginBottom: 8 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginBottom: 12,
-                    }}
-                  >
-                    <Button
-                      mode={
-                        minSimilarityScore === 20 ? "contained" : "outlined"
-                      }
-                      compact
-                      onPress={() => setMinSimilarityScore(20)}
+                {requirements.trim() && (
+                  <>
+                    <Text variant="bodySmall" style={{ marginBottom: 4 }}>
+                      Minimum similarity score: {minSimilarityScore}%
+                    </Text>
+                    <ProgressBar
+                      progress={minSimilarityScore / 100}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 12,
+                      }}
                     >
-                      20%
-                    </Button>
-                    <Button
-                      mode={
-                        minSimilarityScore === 40 ? "contained" : "outlined"
-                      }
-                      compact
-                      onPress={() => setMinSimilarityScore(40)}
-                    >
-                      40%
-                    </Button>
-                    <Button
-                      mode={
-                        minSimilarityScore === 60 ? "contained" : "outlined"
-                      }
-                      compact
-                      onPress={() => setMinSimilarityScore(60)}
-                    >
-                      60%
-                    </Button>
-                    <Button
-                      mode={
-                        minSimilarityScore === 80 ? "contained" : "outlined"
-                      }
-                      compact
-                      onPress={() => setMinSimilarityScore(80)}
-                    >
-                      80%
-                    </Button>
-                  </View>
-                </>
-              )}
+                      <Button
+                        mode={
+                          minSimilarityScore === 20 ? "contained" : "outlined"
+                        }
+                        compact
+                        onPress={() => setMinSimilarityScore(20)}
+                      >
+                        20%
+                      </Button>
+                      <Button
+                        mode={
+                          minSimilarityScore === 40 ? "contained" : "outlined"
+                        }
+                        compact
+                        onPress={() => setMinSimilarityScore(40)}
+                      >
+                        40%
+                      </Button>
+                      <Button
+                        mode={
+                          minSimilarityScore === 60 ? "contained" : "outlined"
+                        }
+                        compact
+                        onPress={() => setMinSimilarityScore(60)}
+                      >
+                        60%
+                      </Button>
+                      <Button
+                        mode={
+                          minSimilarityScore === 80 ? "contained" : "outlined"
+                        }
+                        compact
+                        onPress={() => setMinSimilarityScore(80)}
+                      >
+                        80%
+                      </Button>
+                    </View>
+                  </>
+                )}
 
-              <Button
-                mode="contained"
-                onPress={() => {
-                  setShowBottomSheet(false);
-                  filterList();
-                }}
-                style={{ marginBottom: 8 }}
-              >
-                Apply Filter
-              </Button>
-              <Button onPress={() => setShowBottomSheet(false)} mode="text">
-                Cancel
-              </Button>
+                <Button
+                  mode="contained"
+                  onPress={() => {
+                    setShowBottomSheet(false);
+                    filterList();
+                  }}
+                  style={{ marginBottom: 8 }}
+                >
+                  Apply Filter
+                </Button>
+                <Button onPress={() => setShowBottomSheet(false)} mode="text">
+                  Cancel
+                </Button>
+              </ScrollView>
             </View>
           </View>
         </Modal>
