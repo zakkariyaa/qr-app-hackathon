@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView, StyleSheet, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Text, TextInput, Button, Checkbox } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Styles } from "../styles/Styles";
 
 const SKILLS = [
   "Medical Aid",
@@ -40,14 +40,14 @@ export default function VolunteerSkillsScreen({ navigation, route }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={Styles.container}>
       <Text variant="headlineMedium" style={{ marginBottom: 16 }}>
         Your Skills
       </Text>
 
       <Text variant="titleMedium">Select Skills</Text>
       {SKILLS.map((skill) => (
-        <View key={skill} style={styles.checkboxContainer}>
+        <View key={skill} style={Styles.checkboxContainer}>
           <Checkbox.Android
             status={checkedSkills.includes(skill) ? "checked" : "unchecked"}
             onPress={() => toggleSkill(skill)}
@@ -68,7 +68,7 @@ export default function VolunteerSkillsScreen({ navigation, route }) {
             value={value}
             onChangeText={onChange}
             mode="outlined"
-            style={styles.input}
+            style={Styles.input}
           />
         )}
       />
@@ -82,7 +82,7 @@ export default function VolunteerSkillsScreen({ navigation, route }) {
             value={value}
             onChangeText={onChange}
             mode="outlined"
-            style={styles.input}
+            style={Styles.input}
           />
         )}
       />
@@ -97,16 +97,3 @@ export default function VolunteerSkillsScreen({ navigation, route }) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});
