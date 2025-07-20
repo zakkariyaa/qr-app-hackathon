@@ -7,17 +7,26 @@ import {
   Card,
   Chip,
   Portal,
+  ProgressBar,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Styles } from "../styles/Styles";
+import { sortVolunteersBySimilarity } from "../utils/semanticSimilarity";
 
-export default function AvailableVolunteersScreen({ navigation }) {
+const SMART_MATCHING_TEXT = `Describe your ideal candidate. The system will automatically match volunteers based on how well their motivations align with your requirements.`;
+
+export default function AvailableVolunteersScreen({
+  navigation,
+}: {
+  navigation: any;
+}) {
   const [volunteers, setVolunteers] = useState<any[]>([]);
   const [filtered, setFiltered] = useState<any[]>([]);
   const [filterSkill, setFilterSkill] = useState("");
   const [filterLocation, setFilterLocation] = useState("");
   const [requirements, setRequirements] = useState("");
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [minSimilarityScore, setMinSimilarityScore] = useState(30);
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -42,8 +51,15 @@ export default function AvailableVolunteersScreen({ navigation }) {
     loadVolunteers();
   }, []);
 
+  // Re-apply filters when semantic filter settings change
+  useEffect(() => {
+    filterList();
+  }, [minSimilarityScore, requirements]);
+
   const filterList = () => {
     let filteredList = volunteers;
+
+    // Apply traditional filters first
     if (filterSkill.trim()) {
       const keyword = filterSkill.toLowerCase();
       filteredList = filteredList.filter((v) =>
@@ -56,6 +72,25 @@ export default function AvailableVolunteersScreen({ navigation }) {
         (v) => v.location && v.location.toLowerCase().includes(loc)
       );
     }
+
+    // Always apply semantic similarity if requirements are provided
+    if (requirements.trim()) {
+      const volunteersWithScores = sortVolunteersBySimilarity(
+        filteredList,
+        requirements
+      );
+      filteredList = volunteersWithScores.filter(
+        (v) => v.similarityScore >= minSimilarityScore
+      );
+    } else {
+      // If no requirements, just ensure we reset any existing similarity scores
+      filteredList = filteredList.map((v) => ({
+        ...v,
+        similarityScore: undefined,
+        matchedTerms: [],
+      }));
+    }
+
     setFiltered(filteredList);
   };
 
@@ -99,21 +134,80 @@ export default function AvailableVolunteersScreen({ navigation }) {
               />
 
               <Text variant="titleMedium" style={{ marginBottom: 4 }}>
-                Requirements
+                Requirements & Smart Matching
               </Text>
               <Text
                 variant="bodyMedium"
                 style={{ marginBottom: 8, color: "#666" }}
               >
-                Describe your ideal candidate
+                {" "}
+                {SMART_MATCHING_TEXT}
               </Text>
               <TextInput
                 placeholder="Enter specific requirements..."
                 value={requirements}
                 onChangeText={setRequirements}
                 mode="outlined"
+                multiline
+                numberOfLines={3}
                 style={{ marginBottom: 12 }}
               />
+
+              {requirements.trim() && (
+                <>
+                  <Text variant="bodySmall" style={{ marginBottom: 4 }}>
+                    Minimum similarity score: {minSimilarityScore}%
+                  </Text>
+                  <ProgressBar
+                    progress={minSimilarityScore / 100}
+                    style={{ marginBottom: 8 }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginBottom: 12,
+                    }}
+                  >
+                    <Button
+                      mode={
+                        minSimilarityScore === 20 ? "contained" : "outlined"
+                      }
+                      compact
+                      onPress={() => setMinSimilarityScore(20)}
+                    >
+                      20%
+                    </Button>
+                    <Button
+                      mode={
+                        minSimilarityScore === 40 ? "contained" : "outlined"
+                      }
+                      compact
+                      onPress={() => setMinSimilarityScore(40)}
+                    >
+                      40%
+                    </Button>
+                    <Button
+                      mode={
+                        minSimilarityScore === 60 ? "contained" : "outlined"
+                      }
+                      compact
+                      onPress={() => setMinSimilarityScore(60)}
+                    >
+                      60%
+                    </Button>
+                    <Button
+                      mode={
+                        minSimilarityScore === 80 ? "contained" : "outlined"
+                      }
+                      compact
+                      onPress={() => setMinSimilarityScore(80)}
+                    >
+                      80%
+                    </Button>
+                  </View>
+                </>
+              )}
 
               <Button
                 mode="contained"
@@ -136,10 +230,56 @@ export default function AvailableVolunteersScreen({ navigation }) {
       <ScrollView style={{ marginTop: 12 }}>
         {filtered.map((v) => (
           <Card key={v.id} style={{ marginVertical: 8 }}>
-            <Card.Title title={v.name} subtitle={v.location} />
+            <Card.Title
+              title={v.name}
+              subtitle={v.location}
+              right={() =>
+                v.similarityScore !== undefined ? (
+                  <View style={{ alignItems: "center", paddingRight: 16 }}>
+                    <Text variant="bodySmall" style={{ color: "#666" }}>
+                      Match
+                    </Text>
+                    <Text
+                      variant="titleMedium"
+                      style={{
+                        color:
+                          v.similarityScore >= 60
+                            ? "#4CAF50"
+                            : v.similarityScore >= 40
+                            ? "#FF9800"
+                            : "#F44336",
+                      }}
+                    >
+                      {v.similarityScore}%
+                    </Text>
+                  </View>
+                ) : null
+              }
+            />
             <Card.Content>
               <Text>Availability: {v.availability}</Text>
               <Text>LinkedIn: {v.linkedin}</Text>
+
+              {v.matchedTerms?.length > 0 && (
+                <View style={{ marginTop: 8 }}>
+                  <Text
+                    variant="bodySmall"
+                    style={{ color: "#666", marginBottom: 4 }}
+                  >
+                    Matched keywords:
+                  </Text>
+                  <View style={Styles.chipRow}>
+                    {v.matchedTerms
+                      .slice(0, 5)
+                      .map((term: string, i: number) => (
+                        <Chip key={i} style={{ backgroundColor: "#E8F5E8" }}>
+                          {term}
+                        </Chip>
+                      ))}
+                  </View>
+                </View>
+              )}
+
               <View style={Styles.chipRow}>
                 {v.skills.map((skill: string, i: number) => (
                   <Chip key={i} style={Styles.chip}>
@@ -147,10 +287,46 @@ export default function AvailableVolunteersScreen({ navigation }) {
                   </Chip>
                 ))}
               </View>
+
+              {v.motivation?.motivations && (
+                <View style={{ marginTop: 8 }}>
+                  <Text
+                    variant="bodySmall"
+                    style={{ color: "#666", marginBottom: 4 }}
+                  >
+                    Motivation:
+                  </Text>
+                  <Text variant="bodyMedium" numberOfLines={3}>
+                    {v.motivation.motivations}
+                  </Text>
+                </View>
+              )}
             </Card.Content>
             {/* Optional contact button here */}
           </Card>
         ))}
+
+        {filtered.length === 0 && (
+          <View style={{ padding: 20, alignItems: "center" }}>
+            <Text
+              variant="bodyLarge"
+              style={{ color: "#666", textAlign: "center" }}
+            >
+              {requirements.trim()
+                ? `No volunteers found matching your requirements with ${minSimilarityScore}% similarity or higher.`
+                : "No volunteers found matching your filters."}
+            </Text>
+            {requirements.trim() && (
+              <Text
+                variant="bodyMedium"
+                style={{ color: "#666", textAlign: "center", marginTop: 8 }}
+              >
+                Try lowering the similarity threshold or adjusting your
+                requirements.
+              </Text>
+            )}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
