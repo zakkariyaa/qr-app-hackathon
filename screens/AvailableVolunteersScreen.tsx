@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, StyleSheet, Modal } from "react-native";
+import { View, ScrollView, Modal } from "react-native";
 import {
   Text,
   TextInput,

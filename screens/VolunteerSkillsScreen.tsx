@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Text, TextInput, Button, Checkbox } from "react-native-paper";
 import { Styles } from "../styles/Styles";

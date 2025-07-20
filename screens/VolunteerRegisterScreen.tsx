@@ -1,16 +1,8 @@
 import React from "react";
-import { View, ScrollView, Alert } from "react-native";
+import { ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { TextInput, Button, Text, Checkbox } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInput, Button, Text } from "react-native-paper";
 import { Styles } from "../styles/Styles";
-
-const SKILLS = [
-  "Medical Aid",
-  "Translation",
-  "Logistics",
-  "Mental Health Support",
-];
 
 export default function VolunteerRegisterScreen({ navigation }) {
   const { control, handleSubmit, reset } = useForm();

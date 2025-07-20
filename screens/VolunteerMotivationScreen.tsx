@@ -1,7 +1,7 @@
 import React from "react";
-import { View, ScrollView, StyleSheet, Alert } from "react-native";
+import { ScrollView, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { Text, TextInput, Button, Checkbox } from "react-native-paper";
+import { Text, TextInput, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Styles } from "../styles/Styles";
 
