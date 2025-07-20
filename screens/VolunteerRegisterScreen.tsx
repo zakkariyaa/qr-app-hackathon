@@ -15,6 +15,7 @@ export default function VolunteerRegisterScreen({ navigation }) {
   const [checkedSkills, setCheckedSkills] = React.useState<string[]>([]);
 
   const onSubmit = async (formData: any) => {
+    /*
     const { data: insertedData, error } = await supabase
       .from('volunteers')
       .insert([
@@ -34,6 +35,8 @@ export default function VolunteerRegisterScreen({ navigation }) {
       console.log('Volunteer data:', insertedData
       );
     }
+
+    */
 
     navigation.navigate("VolunteerSkills", { basicInfo: formData });
   };
