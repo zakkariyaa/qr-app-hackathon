@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const Styles = StyleSheet.create({
   homeContainer: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
@@ -27,11 +26,12 @@ export const Styles = StyleSheet.create({
     alignItems: "center",
   },
   sheetContainer: {
-    // backgroundColor: "white",
+    backgroundColor: "white",
     padding: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    minHeight: 200,
+    minHeight: "60%",
+    maxHeight: "80%",
   },
   sheetOverlay: {
     flex: 1,
@@ -51,5 +51,25 @@ export const Styles = StyleSheet.create({
   chip: {
     marginRight: 4,
     marginBottom: 4,
+  },
+  matchScore: {
+    alignItems: "center",
+    paddingRight: 16,
+  },
+  matchedChip: {
+    backgroundColor: "#E8F5E8",
+    marginRight: 4,
+    marginBottom: 4,
+  },
+  motivationSection: {
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 8,
+  },
+  similarityControls: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
   },
 });
