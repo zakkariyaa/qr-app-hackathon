@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
 import { volunteers } from '../types/supabase';
 import { useEffect } from 'react';
+import { Styles } from "../styles/Styles";
 
 const SKILLS = ['Medical Aid', 'Translation', 'Logistics', 'Mental Health Support'];
 
@@ -33,18 +34,28 @@ export default function VolunteerRegisterScreen({ navigation }) {
       console.log('Volunteer data:', insertedData
       );
     }
+
+    navigation.navigate("VolunteerSkills", { basicInfo: formData });
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text variant="headlineMedium" style={{ marginBottom: 16 }}>Volunteer Sign-Up</Text>
+    <ScrollView contentContainerStyle={Styles.container}>
+      <Text variant="headlineMedium" style={{ marginBottom: 16 }}>
+        Volunteer Sign-Up
+      </Text>
 
       <Controller
         control={control}
         name="full_name"
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
-          <TextInput label="Full Name" value={value} onChangeText={onChange} mode="outlined" style={styles.input} />
+          <TextInput
+            label="Full Name"
+            value={value}
+            onChangeText={onChange}
+            mode="outlined"
+            style={Styles.input}
+          />
         )}
       />
 
@@ -53,7 +64,7 @@ export default function VolunteerRegisterScreen({ navigation }) {
         name="DOB"
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
-          <TextInput label="Date of Birth" value={value} onChangeText={onChange} mode="outlined" style={styles.input} />
+          <TextInput label="Date of Birth" value={value} onChangeText={onChange} mode="outlined" style={Styles.input} />
         )}
       />
 
@@ -62,7 +73,14 @@ export default function VolunteerRegisterScreen({ navigation }) {
         name="email"
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
-          <TextInput label="Email" value={value} onChangeText={onChange} keyboardType="email-address" mode="outlined" style={styles.input} />
+          <TextInput
+            label="Email"
+            value={value}
+            onChangeText={onChange}
+            keyboardType="email-address"
+            mode="outlined"
+            style={Styles.input}
+          />
         )}
       />
 
@@ -70,43 +88,39 @@ export default function VolunteerRegisterScreen({ navigation }) {
         control={control}
         name="linkedin_url"
         render={({ field: { onChange, value } }) => (
-            <TextInput
+          <TextInput
             label="LinkedIn Profile URL"
             value={value}
             onChangeText={onChange}
             keyboardType="url"
             mode="outlined"
-            style={styles.input}
-            />
+            style={Styles.input}
+          />
         )}
-        />
+      />
 
       <Controller
         control={control}
         name="location"
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
-          <TextInput label="Location" value={value} onChangeText={onChange} mode="outlined" style={styles.input} />
+          <TextInput
+            label="Location"
+            value={value}
+            onChangeText={onChange}
+            mode="outlined"
+            style={Styles.input}
+          />
         )}
       />
 
-
-      <Button mode="contained" onPress={handleSubmit(onSubmit)} style={{ marginTop: 24 }}>
+      <Button
+        mode="contained"
+        onPress={handleSubmit(onSubmit)}
+        style={{ marginTop: 24 }}
+      >
         Next
       </Button>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
