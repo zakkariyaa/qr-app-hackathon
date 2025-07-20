@@ -1,15 +1,44 @@
-import React from "react";
-import { ScrollView } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { TextInput, Button, Text } from "react-native-paper";
+import React, { useState } from 'react';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { TextInput, Button, Text, Checkbox } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../lib/supabase';
+import { volunteers } from '../types/supabase';
+import { useEffect } from 'react';
 import { Styles } from "../styles/Styles";
+
+const SKILLS = ['Medical Aid', 'Translation', 'Logistics', 'Mental Health Support'];
 
 export default function VolunteerRegisterScreen({ navigation }) {
   const { control, handleSubmit, reset } = useForm();
   const [checkedSkills, setCheckedSkills] = React.useState<string[]>([]);
 
-  const onSubmit = async (data: any) => {
-    navigation.navigate("VolunteerSkills", { basicInfo: data });
+  const onSubmit = async (formData: any) => {
+    /*
+    const { data: insertedData, error } = await supabase
+      .from('volunteers')
+      .insert([
+        { full_name: formData.full_name,
+          DOB: formData.DOB,
+          email: formData.email,
+          linkedin_url: formData.linkedin_url,
+          location: formData.location
+        },
+      ])
+      .select()
+    
+    if (error) {
+      console.error('Error fetching volunteers:', error.message);
+      Alert.alert('Error', error.message);
+    } else {
+      console.log('Volunteer data:', insertedData
+      );
+    }
+
+    */
+
+    navigation.navigate("VolunteerSkills", { basicInfo: formData });
   };
 
   return (
@@ -20,7 +49,7 @@ export default function VolunteerRegisterScreen({ navigation }) {
 
       <Controller
         control={control}
-        name="name"
+        name="full_name"
         rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <TextInput
@@ -30,6 +59,15 @@ export default function VolunteerRegisterScreen({ navigation }) {
             mode="outlined"
             style={Styles.input}
           />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="DOB"
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <TextInput label="Date of Birth" value={value} onChangeText={onChange} mode="outlined" style={Styles.input} />
         )}
       />
 
@@ -51,7 +89,7 @@ export default function VolunteerRegisterScreen({ navigation }) {
 
       <Controller
         control={control}
-        name="linkedin"
+        name="linkedin_url"
         render={({ field: { onChange, value } }) => (
           <TextInput
             label="LinkedIn Profile URL"

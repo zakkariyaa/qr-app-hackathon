@@ -14,7 +14,7 @@ const SKILLS = [
 export default function VolunteerSkillsScreen({ navigation, route }) {
   const { basicInfo } = route.params;
   const { control, handleSubmit } = useForm();
-  const [checkedSkills, setCheckedSkills] = React.useState<string[]>([]);
+  const [ checkedSkills, setCheckedSkills] = React.useState<string[]>([]);
 
   const toggleSkill = (skill: string) => {
     setCheckedSkills((prev) =>

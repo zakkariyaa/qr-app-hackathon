@@ -5,10 +5,13 @@ import { Text, TextInput, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Styles } from "../styles/Styles";
 
+import { supabase } from '../lib/supabase';
+import { volunteers } from '../types/supabase';
+
 const VOLUNTEER_MOTIVATION_TEXT = `Please explain why you would like to volunteer, and which specific initiatives you're interested in.
 (500 words or less)`;
 
-export default function VolunteerSkillsScreen({ navigation, route }) {
+export default function VolunteerMotivationScreen({ navigation, route }) {
   const { basicInfo, skills, availability } = route.params;
   const { control, handleSubmit } = useForm();
 
@@ -17,15 +20,27 @@ export default function VolunteerSkillsScreen({ navigation, route }) {
       ...basicInfo,
       availability: availability,
       skills: skills,
-      id: Date.now().toString(),
-      motivation: data,
+      motivations: data.motivations,
     };
 
     try {
-      const existing = await AsyncStorage.getItem("volunteers");
-      const parsed = existing ? JSON.parse(existing) : [];
-      parsed.push(volunteer);
-      await AsyncStorage.setItem("volunteers", JSON.stringify(parsed));
+      
+      // Insert the entire volunteer object to Supabase
+      const { data: insertedData, error } = await supabase
+        .from('volunteers')
+        .insert([volunteer])
+        .select();
+      
+      if (error) {
+        console.error('Error fetching volunteers:', error.message);
+        Alert.alert('Error', error.message);
+      } else {
+        console.log('Volunteer data:', insertedData
+        );
+      }
+      
+      console.log(JSON.stringify(volunteer))
+
       Alert.alert("Success", "Volunteer registered!");
       navigation.popToTop();
     } catch (e) {
