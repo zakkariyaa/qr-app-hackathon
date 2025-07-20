@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import React, {useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import VolunteerRegisterScreen from './screens/VolunteerRegisterScreen';
 import VolunteerSkillsScreen from './screens/VolunteerSkillsScreen';
@@ -14,16 +15,18 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="VolunteerRegister" component={VolunteerRegisterScreen} />
-        <Stack.Screen name="VolunteerSkills" component={VolunteerSkillsScreen} />
-        <Stack.Screen name="VolunteerMotivation" component={VolunteerMotivationScreen} />
-        <Stack.Screen name="OrganizerRegister" component={OrganizerRegisterScreen} />
-        <Stack.Screen name="AvailableVolunteers" component={AvailableVolunteersScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="VolunteerRegister" component={VolunteerRegisterScreen} />
+          <Stack.Screen name="VolunteerSkills" component={VolunteerSkillsScreen} />
+          <Stack.Screen name="VolunteerMotivation" component={VolunteerMotivationScreen} />
+          <Stack.Screen name="OrganizerRegister" component={OrganizerRegisterScreen} />
+          <Stack.Screen name="AvailableVolunteers" component={AvailableVolunteersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
